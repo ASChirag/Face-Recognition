@@ -43,5 +43,5 @@ def load_face_database():
         return pickle.load(f)
     
 if __name__ == "__main__":
-    known_faces_dir = "Project/Images"  # Update this path
+    known_faces_dir = "Face-Recognition/Images"  # Update this path
     create_face_database(known_faces_dir)
