@@ -25,18 +25,29 @@ def create_face_database(known_faces_dir):
     known_embeddings = []
     known_names = []
 
-    for file_name in os.listdir(known_faces_dir):
-        if file_name.endswith(".jpg") or file_name.endswith(".png"):
-            name = os.path.splitext(file_name)[0]
-            image_path = os.path.join(known_faces_dir, file_name)
-            embedding = get_face_embedding(image_path)
-            
-            known_embeddings.append(embedding)
-            known_names.append(name)
+    # Iterate through each subfolder in the main directory
+    for class_name in os.listdir(known_faces_dir):
+        class_dir = os.path.join(known_faces_dir, class_name)
+        if not os.path.isdir(class_dir):
+            continue
+        
+        embeddings = []
+
+        for file_name in os.listdir(class_dir):
+            if file_name.endswith(".jpg") or file_name.endswith(".png"):
+                image_path = os.path.join(class_dir, file_name)
+                embedding = get_face_embedding(image_path)
+                embeddings.append(embedding)
+
+        if embeddings:
+            mean_embedding = np.mean(embeddings, axis=0)
+            known_embeddings.append(mean_embedding)
+            known_names.append(class_name)
 
     with open("face_embeddings.pickle", "wb") as f:
         pickle.dump((known_embeddings, known_names), f)
     print("Face embeddings saved to face_embeddings.pickle")
+
 
 def load_face_database():
     with open("face_embeddings.pickle", "rb") as f:
