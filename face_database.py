@@ -44,15 +44,15 @@ def create_face_database(known_faces_dir):
             known_embeddings.append(mean_embedding)
             known_names.append(class_name)
 
-    with open("face_embeddings.pickle", "wb") as f:
+    with open("face_embeddings_new.pickle", "wb") as f:
         pickle.dump((known_embeddings, known_names), f)
     print("Face embeddings saved to face_embeddings.pickle")
 
 
 def load_face_database():
-    with open("face_embeddings.pickle", "rb") as f:
+    with open("face_embeddings_new.pickle", "rb") as f:
         return pickle.load(f)
     
 if __name__ == "__main__":
-    known_faces_dir = "Face-Recognition/Images"  # Update this path
+    known_faces_dir = "Face-Recognition/Dataset"  # Update this path
     create_face_database(known_faces_dir)
